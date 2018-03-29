@@ -1,0 +1,38 @@
+@font-face
+  font-family: 'FontAwesome'
+  src: url('/fonts/fontawesome-webfont.eot?v=4.7.0')
+  src: url('/fonts/fontawesome-webfont.eot?#iefix&v=4.7.0') format('embedded-opentype'), url('/fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2'), url('/fonts/fontawesome-webfont.woff?v=4.7.0') format('woff'), url('/fonts/fontawesome-webfont.ttf?v=4.7.0') format('truetype'), url('/fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg')
+  font-weight: normal
+  font-style: normal
+
+@mixin font
+  font-family: 'Open Sans', sans-serif
+
+$normal-font-size: 16px
+$large-font-size: 24px
+
+$color: #414141
+$color-add: #ff3533
+
+@mixin bold
+  font-weight: 900
+@mixin half-bold
+  font-weight: 500
+  
+@mixin mq($point)
+  @media only screen and (max-width: $point)
+    @content
+
+@mixin mq-up($point)
+  @media only screen and (min-width: $point)
+    @content
+
+@mixin mq-between($point-down, $point-up)
+  @media only screen and (min-width: $point-down) and (max-width: $point-up)
+    @content
+
+
+$margin: 100px
+$inner-margin: 30px
+
+

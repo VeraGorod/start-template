@@ -44,10 +44,10 @@ var path = {
     },
     src: { //Пути откуда брать исходники
         
-        js: ['jslib/**/*.js', 'js/**/*.js'],
+        js: ['jslib/first/jquery.min.js','jslib/*.js', 'js/**/*.js'],
         jshint: 'js/**/*.js',
         sass: 'sass/style.sass',
-        css: 'css/*.css',
+        css: ['css/first/normalize.css','css/*.css'],
         img: ['img/**/*.*'], 
         fonts: 'fonts/**/*.*',
         
@@ -70,34 +70,33 @@ gulp.task('html:build', function () {
 
 // проверка js на ошибки и вывод их в консоль
 gulp.task('jshint:build', function() {
-    return gulp.src(path.src.jshint) //выберем файлы по нужному пути
+    return gulp.src(path.src.jshint) 
         .pipe(jshint()) //прогоним через jshint
         .pipe(jshint.reporter('jshint-stylish')); //стилизуем вывод ошибок в консоль
 });
 
 // билдинг яваскрипта
 gulp.task('js:build', function () {
-    gulp.src(path.src.js) //Найдем наш main файл
-        .pipe(sourcemaps.init()) //Инициализируем sourcemap
+    gulp.src(path.src.js) 
+        .pipe(sourcemaps.init()) 
         .pipe(concat('app.js'))
-        .pipe(uglify()) //Сожмем наш js
-        .pipe(sourcemaps.write()) //Пропишем карты
-        .pipe(rename({suffix: '.min'})) //добавим суффикс .min к выходному файлу
-        .pipe(gulp.dest(path.build.js)); //выгрузим готовый файл в build       
+        .pipe(uglify()) 
+        .pipe(sourcemaps.write()) 
+        .pipe(rename({suffix: '.min'})) 
+        .pipe(gulp.dest(path.build.js)); 
         browserSync.reload();
 });
 
 
 gulp.task('image:build', function () {
-    gulp.src(path.src.img) //Выберем наши картинки
-        //.pipe(changed('imageBuilding'))
+    gulp.src(path.src.img) 
         .pipe(newer(path.build.img))
         .pipe(tiny())
-        .pipe(gulp.dest(path.build.img)); //выгрузим в build
-        browserSync.reload();//перезагрузим сервер
+        .pipe(gulp.dest(path.build.img)); 
+        browserSync.reload();
 });
 
-// обработка sass
+
 gulp.task('sass:build', function(){
   gulp.src('sass/style.sass')
   .pipe(sass())
@@ -105,30 +104,30 @@ gulp.task('sass:build', function(){
 });
 
 
-// билдинг пользовательского css
+
 gulp.task('css:build', function () {
-    gulp.src(path.src.css) //Выберем наш основной файл стилей
-        .pipe(sourcemaps.init()) //инициализируем soucemap
+    gulp.src(path.src.css) 
+        .pipe(sourcemaps.init()) 
         .pipe(autoprefixer({
             browsers: ['>0.01%'],
             cascade: false
         }))
-        .pipe(concat('style.css')) //соединим
+        .pipe(concat('style.css')) 
         .pipe(minify())
-        .pipe(sourcemaps.write()) //пропишем sourcemap
-        .pipe(rename({suffix: '.min'})) //добавим суффикс .min к имени выходного файла
-        .pipe(gulp.dest(path.build.css)); //вызгрузим в build
-        browserSync.reload(); //перезагрузим сервер
+        .pipe(sourcemaps.write()) 
+        .pipe(rename({suffix: '.min'})) 
+        .pipe(gulp.dest(path.build.css)); 
+        browserSync.reload(); 
 });
 
 
-// билдим шрифты
+
 gulp.task('fonts:build', function() {
     gulp.src(path.src.fonts)
-        .pipe(gulp.dest(path.build.fonts)) //выгружаем в build
+        .pipe(gulp.dest(path.build.fonts)) 
 });
 
-// билдим все
+
 gulp.task('build', [
     'jshint:build',
     'js:build',
@@ -141,31 +140,31 @@ gulp.task('build', [
 
 // watch
 gulp.task('watch', ['browserSync'], function(){
-     //билдим html в случае изменения
+    
     gwatch(path.watch.html, function(event, cb) {
         gulp.start('html:build');
     });    
-      //билдим sass в случае изменения
+     
     gwatch([path.watch.sass], function(event, cb) {
         gulp.start('sass:build');
     });
 
-     //билдим css в случае изменения
+     
     gwatch([path.watch.css], function(event, cb) {
         gulp.start('css:build');
     });
 
-     //проверяем js в случае изменения
+     
     gwatch(path.watch.js, ['jshint']);
-     //билдим js в случае изменения
+     
     gwatch(path.watch.js, function(event, cb) {
         gulp.start('js:build');
     });
-     //билдим статичные изображения в случае изменения
+     
     gwatch([path.watch.img], function(event, cb) {
         gulp.start('image:build');
     });
-     //билдим шрифты в случае изменения
+     
     gwatch([path.watch.fonts], function(event, cb) {
         gulp.start('fonts:build');
     });
