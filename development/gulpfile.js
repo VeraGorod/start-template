@@ -45,7 +45,6 @@ var path = {
     src: { //Пути откуда брать исходники
         
         js: ['jslib/first/jquery.min.js',
-        //'jslib/sliderbx/*.js',
         'jslib/*.js', 
         'js/**/*.js'],
         jshint: 'js/**/*.js',
